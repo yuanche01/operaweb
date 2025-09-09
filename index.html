@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿宫腔 - 中国非物质文化遗产</title>
+    
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <link rel="stylesheet" href="/operaweb/style.css">
+    
+    <!-- 引入外部资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <!-- 配置Tailwind自定义主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#9E2A2B',      // 传统中国红，象征戏曲的热烈
+                        secondary: '#335C67',    // 青蓝色，象征传统与稳重
+                        accent: '#E09F3E',       // 金色，象征戏曲的华丽
+                        neutral: '#2B2D42',      // 深色，用于文本
+                        light: '#F8F9FA',        // 浅色，用于背景
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                        serif: ['Noto Serif SC', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+            }
+            .scroll-smooth {
+                scroll-behavior: smooth;
+            }
+        }
+    </style>
+    
+    <!-- 其他样式 -->
+    <style>
+        /* 导入中文字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+        
+        /* 基础动画 */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 戏曲风格装饰线条 */
+        .opera-divider {
+            height: 3px;
+            background-image: linear-gradient(90deg, transparent, #9E2A2B, transparent);
+            margin: 2rem auto;
+        }
+        
+        /* 导航栏滚动效果 */
+        .nav-scrolled {
+            background-color: rgba(43, 45, 66, 0.95);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 卡片悬停效果 */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* 卡片标题容器样式 */
+        .card-header {
+            position: relative;
+            height: 48px;
+        }
+    </style>
+</head>
+
+<body class="bg-light text-neutral font-sans scroll-smooth">
+
+
+
+    <button id="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-rounded">close</span>
+    </button>
+
+
+    <div class="chatbot-popup">
+        <!-- header -->
+        <div class="chat-header">
+            <div class="header-info">
+                <svg class="chatbot-logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+                <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path>
+                </svg>
+            <h2 class="logo-text">云宫艺讯</h2>
+            </div>
+            <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
+        </div>
+
+        <!-- body -->
+        <div class="chat-body">
+            <div class="message bot-message">
+                <svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024">
+                <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path>
+                </svg>
+                <div class="message-text">你好，我是云宫艺讯，请问有什么可以帮到你😇</div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div class="chat-footer">
+            <form action="#" class="chat-form">
+                <textarea placeholder="Message..." class="message-input" required></textarea>
+                <div class="chat-controls">
+                    <button type="button" id="emoji-picker"  class="material-symbols-outlined">sentiment_satisfied</button>
+                    <div class="file-upload-wrapper">
+                        <input type="file" accept="images/*" id="file-input" hidden>
+                        <img src="#">
+                        <button type="button" id="file-upload" class="material-symbols-rounded">attach_file</button>
+                        <button type="button" id="file-cancel" class="material-symbols-rounded">close</button>
+                    </div>
+                    <button type="submit" id="send-message"  class="material-symbols-rounded">arrow_upward</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Linking Emoji Mart script -->
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+
+    <script src="/operaweb/script.js"> </script>
+
+
+
+
+
+
+
+
+
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-4 md:px-6">
+            <nav class="flex items-center justify-between">
+                <!-- 网站Logo -->
+                <a href="#home" class="flex items-center space-x-2">
+                    <span class="text-primary text-3xl"><i class="fa fa-music"></i></span>
+                    <span class="text-2xl font-serif font-bold text-white">阿宫腔</span>
+                </a>
+                
+                <!-- 桌面端导航 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-accent transition-colors">首页</a>
+                    <a href="#origin" class="text-white hover:text-accent transition-colors">探本溯源</a>
+                    <a href="#art" class="text-white hover:text-accent transition-colors">艺术宝库</a>
+                    <a href="#media" class="text-white hover:text-accent transition-colors">影音馆</a>
+                    <a href="#inheritance" class="text-white hover:text-accent transition-colors">传承创新</a>
+                    <a href="#community" class="text-white hover:text-accent transition-colors">互动社区</a>
+                    <a href="#info" class="text-white hover:text-accent transition-colors">咨询中心</a>
+                </div>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden text-white text-2xl">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </nav>
+            
+            <!-- 移动端导航菜单 -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4 bg-neutral/95 rounded-lg p-4 fade-in">
+                <div class="flex flex-col space-y-3">
+                    <a href="#home" class="text-white hover:text-accent transition-colors py-2">首页</a>
+                    <a href="#origin" class="text-white hover:text-accent transition-colors py-2">探本溯源</a>
+                    <a href="#art" class="text-white hover:text-accent transition-colors py-2">艺术宝库</a>
+                    <a href="#media" class="text-white hover:text-accent transition-colors py-2">影音馆</a>
+                    <a href="#inheritance" class="text-white hover:text-accent transition-colors py-2">传承创新</a>
+                    <a href="#community" class="text-white hover:text-accent transition-colors py-2">互动社区</a>
+                    <a href="#info" class="text-white hover:text-accent transition-colors py-2">咨询中心</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. 首页部分 -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- 背景图 -->
+        <div class="absolute inset-0 z-0">
+            <img src="/operaweb/3.png" alt="阿宫腔表演场景" class="w-full h-full object-cover opacity-70">
+            <div class="absolute inset-0 bg-neutral/60"></div>
+        </div>
+        
+        <!-- 主要内容 -->
+        <div class="container mx-auto px-4 z-10 text-center">
+            <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-serif font-bold text-white mb-6 text-shadow fade-in">
+                阿宫腔
+            </h1>
+            <p class="text-[clamp(1.2rem,4vw,2.2rem)] text-white max-w-3xl mx-auto mb-10 text-shadow fade-in" style="animation-delay: 0.2s">
+                千年秦声韵，一曲绕梁音
+            </p>
+            <a href="#origin" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-full transition-all transform hover:scale-105 fade-in" style="animation-delay: 0.4s">
+                探索阿宫腔的魅力
+            </a>
+        </div>
+        
+        <!-- 向下滚动指示 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fa fa-chevron-down text-2xl"></i>
+        </div>
+        
+        <!-- 最新活动/资讯推送 -->
+        <div class="absolute bottom-0 left-0 right-0 bg-neutral/80 bg-blur text-white py-4">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-medium">最新活动</h3>
+                    <div class="overflow-hidden relative w-3/4 h-8">
+                        <div id="news-ticker" class="absolute whitespace-nowrap">
+                            <span>阿宫腔经典剧目展演将于下月在西安举行，敬请期待！</span>
+                            <span class="mx-6">「阿宫腔数字化保护工程」取得阶段性成果，已完成10部经典剧目的录制</span>
+                            <span>青年演员培训班开始招生，报名截止日期6月30日</span>
+                        </div>
+                    </div>
+                    <a href="#info" class="text-accent hover:underline hidden md:block">查看全部</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 探本溯源部分 -->
+    <section id="origin" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">探本溯源</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">解答"阿宫腔是什么，从何而来"的问题，厘清其历史脉络</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- 名称由来 -->
+                <div class="bg-light rounded-xl p-8 shadow-md card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fa fa-book text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">名称由来</h3>
+                    <p class="text-gray-600">
+                        阿宫腔是由秦时宫廷乐舞衍变而来，因阿房宫而得其名，至今已有两千多年的历史。<br><br>
+关于秦时宫内乐舞的情况，史册多有记述。《史记·秦本纪》《太平御览》记载了秦始皇统一中国后奢谣不治，《琴苑要录》中写道：秦征天下美女以充后宫乃纵酒离宦，作戏优倡。宫女侍者千人，又征伐数十万士卒囚徒修建阿房宫。据史料记载：“阿房宫东西三里，南北五里，庭下可受十万人，车形酒，马行炙，千人唱，万人合”。据传女乐们的脂粉流入渭河，使河水为之改色。不久项羽就由东南杀来，攻入咸阳，火烧宫殿，大火三月不熄，秦之臣民及众乐工遂作鸟散，流入咸阳以西者众多。秦宫乐舞就在当地繁衍开来。由于此中曲调来自皇宫，而当时诸多宫室中阿房宫又最负盛名，人们就将其称之为“阿宫腔”。
+<br><br>
+<img src="/operaweb/1.png" alt="名称由来" class="rounded-lg shadow-md w-full h-64 object-cover">
+                    </p>
+                </div>
+                
+                <!-- 历史沿革 -->
+                <div class="bg-light rounded-xl p-8 shadow-md card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fa fa-history text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">历史沿革</h3>
+                    <p class="text-gray-600">
+                        我国的戏曲剧种繁多，每个剧种都有自己的音乐特色。阿宫腔是我国唯一一个风格独特的地方戏曲剧种，她早期以“遏工小调”出现，以“皮影”形式演出。阿宫腔和其他剧种的主要区别在于唱腔音乐不同，阿宫腔多用于“遏低翻高”真假声并用的方法演唱，用衬字“咿、呀、哎、呃”拖腔，有“三放不及一遏”的说法。总体音乐风格细腻，宛转悠扬。
+<br><br>
+经世代演变，阿宫腔调遍及兴平、泾阳、三原、临潼、富平等地。阿宫腔的音乐由宫廷音乐衍化而生，曲牌多达400余支，在全国戏剧艺术中独领风骚。由于历史原因和时代变革，阿宫腔仅有富平县段天焕一脉承传，据此可以说富平县是当代阿宫腔的发祥之地，并于1958年被搬上大舞台，2006年，又被列入首批国家级非物质文化遗产名录。
+<br><br><br>
+           <img src="/operaweb/2.png" alt="历史沿革" class="rounded-lg shadow-md w-full h-64 object-cover">
+                    </p>
+                </div>
+                
+                <!-- 艺术特色 -->
+                <div class="bg-light rounded-xl p-8 shadow-md card-hover">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fa fa-star text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">艺术特色</h3>
+                    <p class="text-gray-600">
+                        阿宫腔原为皮影形式演出，1960年搬上大舞台，在唱腔表演音乐伴奏以及舞台美术方面进行了较大的改革，但仍保持了原有的艺术特色。阿宫腔具有娴雅婉转、刚劲有力、缠绵激昂等特点，拖腔带有“噫咽”之音，并以假嗓翻高唱出，颇有南戏之韵。
+                        <br><br>
+                        阿宫腔音乐长于刻画、抒发人物复杂的心理活动。阿宫腔角色行当生旦净丑俱全；表演基本沿袭了秦腔程式，并采用了皮影某些特有的表演动作，显得独特别致。同时，在表演上有塌城剑出鞘踢打等武打特技。阿宫腔其唱腔旋律不沉不躁、清悠秀婉；行腔中的“翻高”“低遏”“一唱三遏”为其特色。阿宫腔尤其以女声最为动听，在唱腔上有明显的拖腔，就是在演唱时经常有“那意呀唉”，据说，这“那意呀唉”是当时秦时宫女的语言习惯。这种习惯一直被阿宫腔这一古老的地方戏曲艺术所沿用。 音乐阿宫腔属板式变化体音乐。声腔分欢音与苦音。欢音表达明朗轻快的情绪，苦因表达悲伤凄楚怀念愤慨的情感。其唱腔保持了阿宫腔腔调，惟净角揉入眉户某些曲调；旦角又吸收了碗碗腔行腔技巧，突出阿宫细腻婉转刚柔并济的特点。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 历史时间线 -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold text-center mb-12">阿宫腔发展历程</h3>
+                <div class="relative">
+                    <!-- 时间线中轴线 -->
+                    <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary/30"></div>
+                    
+                    <!-- 时间点1 -->
+                    <div class="relative mb-16">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-primary z-10"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="md:text-right pr-8 md:pr-16">
+                                <h4 class="text-xl font-bold mb-2">秦朝</h4>
+                                <p class="text-gray-600">据史料记载：“阿房宫东西三里，南北五里，庭下可受十万人，车形酒，马行炙，千人唱，万人合”。据传女乐们的脂粉流入渭河，使河水为之改色。不久项羽就由东南杀来，攻入咸阳，火烧宫殿，大火三月不熄，秦之臣民及众乐工遂作鸟散，流入咸阳以西者众多。秦宫乐舞就在当地繁衍开来。由于此中曲调来自皇宫，而当时诸多宫室中阿房宫又最负盛名，人们就将其称之为“阿宫腔”。</p>
+                            </div>
+                            <div class="md:invisible"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间点2 -->
+                    <div class="relative mb-16">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-primary z-10"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="md:invisible"></div>
+                            <div class="pl-8 md:pl-16">
+                                <h4 class="text-xl font-bold mb-2">1765年</h4>
+                                <p class="text-gray-600">在清代袁文观的 《同官县志》中出现，这是记录阿宫腔的最早文献资料。： 乾隆三十年（1765），10 月，同官县（今铜川）秋成报答土功，献祭山神， 城村居民多唱影戏（注：阿宫腔、弦板腔、秦腔、碗碗腔等）以穰虎患，经月不绝。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间点3 -->
+                    <div class="relative mb-16">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-primary z-10"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="md:text-right pr-8 md:pr-16">
+                                <h4 class="text-xl font-bold mb-2">？-1959年</h4>
+                                <p class="text-gray-600">皮影形式：早期的阿宫腔为皮影形式，五人组成一个戏班， 领了皮影戏箱移动演出于渭北平原的兴平、三原、礼泉、富平一带。细观阿宫腔的皮影， 从雕工上来看，调工的线条与花纹比北路皮影略显粗糙，不甚精美，属于关中西路皮影。 但其人物、动物、景物俱全，又尺寸略大，看起来十分魁伟壮丽。</p>
+                            </div>
+                            <div class="md:invisible"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间点4 -->
+                    <div class="relative">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-primary z-10"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="md:invisible"></div>
+                            <div class="pl-8 md:pl-16">
+                                <h4 class="text-xl font-bold mb-2">1959年至今</h4>
+                                <p class="text-gray-600">舞台形式：1958 年的 7 月《陕西日报》发表了一篇名为《文艺创作也要大搞群众运动》的文章后，文艺界开始了大刀阔斧的改革。改良后的声腔由“翻高遏低”变为“遏低翻高”，不同于皮影时期，变一人演唱同腔同调为男女声同调不同腔，根据剧情和剧中人物需要，设置了大段唱腔，提高了唱腔的旋律性和歌唱性，充分发挥了女声的声腔特点。2006年5月20日，皮影戏（阿宫腔）经国务院批准列入第一批国家级非物质文化遗产名录，项目编号为Ⅳ-91。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+<!-- 5. 阿宫腔正音之旅部分 -->
+<section id="pronunciation" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">阿宫腔正音之旅</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">"阿"字究竟读"a"还是"e"？探寻读音背后的历史渊源</p>
+            <div class="opera-divider w-32"></div>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="grid md:grid-cols-2">
+                <!-- 左侧：读音讲解 -->
+                <div class="p-8 md:p-12">
+                    <h3 class="text-2xl font-bold mb-6 text-primary">「阿」字读音的争议与由来</h3>
+                    
+                    <div class="space-y-6 text-gray-700">
+                        <p>
+                            阿宫腔的"阿"字读音，在学术界和民间存在两种主要说法：一读"a"（音同"啊"），一读"e"（音同"婀"）。这一争议源于其历史渊源和语言演变。
+                        </p>
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-secondary">
+                            <h4 class="font-bold text-lg mb-3">读"a"的观点</h4>
+                            <p>
+                                持此观点者认为，阿宫腔得名于秦朝的阿房宫（ē páng gōng），但在长期的民间流传中，"阿房宫"的"阿"逐渐被读作"a"，进而影响了"阿宫腔"的读音。
+                                <br><br>
+                                这一读音在陕西本地民间更为流行，体现了方言对戏曲名称的影响。
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-primary">
+                            <h4 class="font-bold text-lg mb-3">读"e"的观点</h4>
+                            <p>
+                                支持此读音的学者认为，应尊重历史渊源，"阿宫腔"源自"阿房宫"，故"阿"应保留古音"e"。
+                                <br><br>
+                                这一读音在戏曲研究界和正式出版物中更为常见，体现了对历史名称的尊重。
+                            </p>
+                        </div>
+                        
+                        <p>
+                            值得注意的是，在2006年阿宫腔被列入国家级非物质文化遗产名录时，官方文件中采用的是"阿宫腔"这一写法，但未明确标注读音，这也使得两种发音方式一直并行存在。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 右侧：投票互动 -->
+                <div class="bg-primary/5 p-8 md:p-12 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold mb-8 text-center">您认为应该如何发音？</h3>
+                    
+                    <div class="space-y-6 mb-10">
+                        <!-- 投票选项1 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm transition-all hover:shadow-md cursor-pointer" id="vote-ā">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-primary text-2xl font-bold">ā</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">读作"a"宫腔</h4>
+                                        <p class="text-gray-500 text-sm">音同"啊宫腔"</p>
+                                    </div>
+                                </div>
+                                <span class="text-gray-400 vote-percentage" data-for="ā">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary h-2.5 rounded-full vote-bar" data-for="ā" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 投票选项2 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm transition-all hover:shadow-md cursor-pointer" id="vote-ē">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-secondary text-2xl font-bold">ē</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">读作"e"宫腔</h4>
+                                        <p class="text-gray-500 text-sm">音同"婀宫腔"</p>
+                                    </div>
+                                </div>
+                                <span class="text-gray-400 vote-percentage" data-for="ē">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-secondary h-2.5 rounded-full vote-bar" data-for="ē" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-gray-500 mb-4" id="vote-count">已有 <span>0</span> 人参与投票</p>
+                        <button id="reset-vote" class="hidden text-sm text-gray-500 hover:text-primary transition-colors">
+                            <i class="fa fa-refresh mr-1"></i> 重新投票
+                        </button>
+                    </div>
+                    
+                    <div class="mt-10 pt-6 border-t border-gray-200">
+                        <h4 class="font-bold mb-3 text-center">专家观点</h4>
+                        <p class="text-gray-600 text-sm italic text-center">
+                            "两种读音均有其合理性，反映了语言的演变和文化的传承。对于非物质文化遗产而言，重要的是理解其背后的历史文化内涵，而非纠结于单一的读音规范。"
+                            <br><br>
+                            —— 中国戏曲学院 李教授
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// 阿宫腔读音投票功能
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取DOM元素
+    const voteOptions = {
+        'ā': document.getElementById('vote-ā'),
+        'ē': document.getElementById('vote-ē')
+    };
+    const voteBars = document.querySelectorAll('.vote-bar');
+    const votePercentages = document.querySelectorAll('.vote-percentage');
+    const voteCountEl = document.querySelector('#vote-count span');
+    const resetVoteBtn = document.getElementById('reset-vote');
+    
+    // 初始化投票数据
+    let voteData = {
+        'ā': 0,
+        'ē': 0,
+        total: 0,
+        userVoted: null
+    };
+    
+    // 检查本地存储中是否有投票数据
+    const savedVoteData = localStorage.getItem('agongqiangVoteData');
+    if (savedVoteData) {
+        voteData = JSON.parse(savedVoteData);
+        updateVoteDisplay();
+    }
+    
+    // 投票事件监听
+    for (const [key, element] of Object.entries(voteOptions)) {
+        element.addEventListener('click', function() {
+            if (voteData.userVoted) return;
+            
+            // 记录投票
+            voteData[key]++;
+            voteData.total++;
+            voteData.userVoted = key;
+            
+            // 保存到本地存储
+            localStorage.setItem('agongqiangVoteData', JSON.stringify(voteData));
+            
+            // 更新显示
+            updateVoteDisplay();
+            
+            // 显示已投票效果
+            element.classList.add('ring-2', key === 'ā' ? 'ring-primary' : 'ring-secondary');
+            
+            // 显示重新投票按钮
+            resetVoteBtn.classList.remove('hidden');
+        });
+    }
+    
+    // 重新投票按钮事件
+    resetVoteBtn.addEventListener('click', function() {
+        if (voteData.userVoted) {
+            // 撤销之前的投票
+            voteData[voteData.userVoted]--;
+            voteData.total--;
+            voteData.userVoted = null;
+            
+            // 更新本地存储
+            localStorage.setItem('agongqiangVoteData', JSON.stringify(voteData));
+            
+            // 更新显示
+            updateVoteDisplay();
+            
+            // 移除已投票效果
+            for (const element of Object.values(voteOptions)) {
+                element.classList.remove('ring-2', 'ring-primary', 'ring-secondary');
+            }
+            
+            // 隐藏重新投票按钮
+            resetVoteBtn.classList.add('hidden');
+        }
+    });
+    
+    // 更新投票显示
+    function updateVoteDisplay() {
+        // 更新票数
+        voteCountEl.textContent = voteData.total;
+        
+        // 计算并更新百分比
+        for (const bar of voteBars) {
+            const key = bar.getAttribute('data-for');
+            const percentage = voteData.total > 0 ? (voteData[key] / voteData.total) * 100 : 0;
+            
+            // 带动画效果更新进度条
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = `${percentage}%`;
+            }, 100);
+            
+            // 更新百分比文本
+            for (const pctEl of votePercentages) {
+                if (pctEl.getAttribute('data-for') === key) {
+                    pctEl.textContent = `${Math.round(percentage)}%`;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // 添加到导航菜单
+    const navLinks = document.querySelectorAll('nav a[href="#media"], #mobile-menu a[href="#media"]');
+    navLinks.forEach(link => {
+        const newLink = link.cloneNode(true);
+        newLink.setAttribute('href', '#pronunciation');
+        newLink.textContent = '正音之旅';
+        link.parentNode.insertBefore(newLink, link.nextSibling);
+    });
+});
+</script>
+
+
+
+
+
+    <!-- 3. 艺术宝库部分 -->
+    <section id="art" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">艺术宝库</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">解构阿宫腔的艺术成分，领略传统戏曲的独特魅力</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <!-- 服饰脸谱 -->
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center">服饰脸谱</h3>
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div class="order-2 md:order-1">
+                        <h4 class="text-xl font-bold mb-4 text-primary">华丽服饰</h4>
+                        <p class="text-gray-600 mb-6">
+                            阿宫腔的服饰继承了中国传统戏曲服饰的精髓，又有自身特色。服装华丽精致，色彩鲜明，注重通过服饰区分人物身份、性格和地位。
+                        </p>
+                        <p class="text-gray-600 mb-6">
+                            帝王将相身着龙袍蟒服，色彩以黄、红为主，象征尊贵；文臣武将则穿着不同纹样的官袍，体现其品级；平民百姓则着素色布衣，简洁朴素。
+                        </p>
+                        
+                        <h4 class="text-xl font-bold mb-4 mt-8 text-primary">精美脸谱</h4>
+                        <p class="text-gray-600">
+                            阿宫腔脸谱是中国戏曲脸谱艺术的重要组成部分，通过不同的色彩和图案表现人物的性格特征：红色表示忠诚正义，黑色表示刚直不阿，白色表示阴险狡诈，蓝色表示勇猛暴躁等。
+                            <br><br>
+                            脸谱的绘制精细复杂，每一笔都有特定含义，是阿宫腔艺术的重要表现手法。
+                        </p>
+                    </div>
+                    <div class="order-1 md:order-2 grid grid-cols-2 gap-4">
+                        <img src="/operaweb/11.png" alt="阿宫腔华丽服饰展示" class="rounded-lg shadow-md w-full h-64 object-cover">
+                        <img src="/operaweb/12.png" alt="阿宫腔精美脸谱" class="rounded-lg shadow-md w-full h-64 object-cover mt-8">
+                        <img src="/operaweb/13.png" alt="阿宫腔戏服细节" class="rounded-lg shadow-md w-full h-64 object-cover">
+                        <img src="/operaweb/14.png" alt="阿宫腔脸谱艺术" class="rounded-lg shadow-md w-full h-64 object-cover mt-8">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 经典剧目 -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-center">经典剧目</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 剧目1 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/4.png" alt="《王魁负义·送别》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《王魁负义·送别》</h4>
+                            <p class="text-gray-600 mb-4">
+                                《王魁负义·送别》一折，聚焦王魁赴考前夕与桂英的离别场景，桂英满含牵挂寄望，王魁暂表情意，看似温情的送别间，已暗藏后续王魁负心的伏笔，道尽这段情感悲剧的开端。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：120分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 剧目2 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/5.png" alt="《王魁负义·打神告庙》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《王魁负义·打神告庙》</h4>
+                            <p class="text-gray-600 mb-4">
+                                《王魁负义·打神告庙》中，敫桂英遭王魁背叛，赴海神庙哭诉，求神无果后怒打神像，尽显悲愤绝望。 
+                                <br><br>
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：150分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 剧目3 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/6.png" alt="《女巡按》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《女巡按》</h4>
+                            <p class="text-gray-600 mb-4">
+                                《女巡按》讲述女子因机缘假扮巡按，凭借聪慧与胆识深入案件，破除官场弊病与民间冤屈，以巾帼之身担起正义之责，既展现断案的机敏，也凸显女性突破束缚的魄力。
+
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：135分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 剧目4 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/10.png" alt="《红拆书》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《红拆书》</h4>
+                            <p class="text-gray-600 mb-4">
+                                以“拆书”为关键线索，借一封书信的拆解展开故事：拆开信的瞬间，或许藏着尘封的过往，或是未说尽的情愫，随着内容浮现，人物的悲欢起落渐显，也透出几分人情纠葛的滋味。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：140分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 剧目5 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/8.png" alt="《自有后来人》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《自有后来人》</h4>
+                            <p class="text-gray-600 mb-4">
+聚焦革命家庭的精神传承，讲述老一辈革命者的后代顶着风险坚持抗争，既展现了革命信仰的力量，也凸显“后来人”守护理想的坚定，勾勒出一段饱含家国情怀的动人故事。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：160分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 剧目6 -->
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
+                        <img src="/operaweb/9.png" alt="《滚龙床》剧目海报" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">《滚龙床》</h4>
+                            <p class="text-gray-600 mb-4">
+                            赵匡胤因宠爱妃韩素梅，对其纵容有加，竟在韩素梅的谗言挑拨下，误将开国功臣、结义兄弟郑恩斩杀。既展现了帝王因私废公的失误，也刻画了朝堂之上的权力纠葛与人性复杂。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span class="mr-4"><i class="fa fa-clock-o mr-1"></i> 演出时长：150分钟</span>
+                                <span><i class="fa fa-star mr-1"></i> 经典程度：★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-10">
+                    <a href="#" class="inline-block border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium px-8 py-3 rounded-full transition-colors">
+                        查看更多剧目 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 影音馆部分 -->
+    <section id="media" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">影音馆</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">阿宫腔的音视频资源中心，聆听经典唱腔，观赏精彩表演</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <!-- 视频部分 -->
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center">经典剧目视频</h3>
+                
+                <!-- 视频介绍 -->
+                <div class="max-w-3xl mx-auto mb-10 text-center text-gray-600">
+                    <p>《白蛇传》是陕西地方戏曲中的经典剧目，它以独特的艺术风格展现了这一中国传统民间故事的魅力。
+<br><br>
+在保留传统演唱特色的基础上，其对唱腔和音乐伴奏进行了创新。其声腔中最大特点是拖腔时巧妙运用真假声转换，完成十度以上音程大跳进，形成委婉清扬的独特韵味。在表演上，阿宫腔《白蛇传》融入阿宫腔特有的“剑出鞘”“踢打出手”等武打技巧，增强了舞台的表现力和观赏性。
+<br><br>
+这一剧目讲述了峨眉山千年蛇仙白素贞偕小青在西湖边遇雨借伞，与许仙相识成婚，婚后经历了端阳现形、盗仙草、水漫金山、断桥重逢等情节，最终白素贞在产儿满月时被法海收进金钵，压在雷峰塔下，后小青前来毁塔救出白素贞的故事。</p>
+                </div>
+
+                <!-- 主要视频 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden mb-10 relative" style="padding-top: 56.25%;">
+                    <iframe class="absolute inset-0 w-full h-full" src="https://youtu.be/3LZ2Vo8PNsg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="阿宫腔经典剧目片段"></iframe>
+                </div>
+
+            <!-- 音频部分 -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-center">经典唱腔音频</h3>
+                
+                <!-- 音频介绍 -->
+                <div class="max-w-3xl mx-auto mb-10 text-center text-gray-600">
+                    <p>精选阿宫腔各流派代表性唱腔录音，包括"遏低翻高"的传统唱法与现代改编作品。这里既有李珍珠等名家演绎的《打神告庙》等经典片段，也收录了不同时期的唱腔对比资料，完整呈现了阿宫腔"三放不及一遏"的独特声腔艺术。</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- 音频1 -->
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col md:flex-row items-center shadow-sm">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mb-4 md:mb-0 mr-0 md:mr-6">
+                            <a href="/operaweb/《打神告庙》李珍珠.mp3" class="fa fa-music text-2xl"></a>
+                        </div>
+                        <div class="flex-grow text-center md:text-left mb-4 md:mb-0">
+                            <h4 class="font-bold text-lg">《打神告庙》</h4>
+                            <p class="text-gray-500">演唱：李珍珠 | 时长：04:25</p>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <audio controls class="w-full md:w-auto">
+                                <source src="#" type="audio/mpeg">
+                                您的浏览器不支持音频播放
+                            </audio>
+                        </div>
+                    </div>
+                    
+                    <!-- 音频2 -->
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col md:flex-row items-center shadow-sm">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mb-4 md:mb-0 mr-0 md:mr-6">
+                           <a href="/operaweb/《断桥》冯碧茹、唐小利、刘立萍（主演）.mp3" class="fa fa-music text-2xl"></a>
+                        </div>
+                        <div class="flex-grow text-center md:text-left mb-4 md:mb-0">
+                            <h4 class="font-bold text-lg">《断桥》</h4>
+                            <p class="text-gray-500">演唱：冯碧茹、唐小利、刘立萍 | 时长：06:12</p>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <audio controls class="w-full md:w-auto">
+                                <source src="#" type="audio/mpeg">
+                                您的浏览器不支持音频播放
+                            </audio>
+                        </div>
+                    </div>
+                    
+                    <!-- 音频3 -->
+                    <div class="bg-gray-50 rounded-xl p-6 flex flex-col md:flex-row items-center shadow-sm">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mb-4 md:mb-0 mr-0 md:mr-6">
+                            <a href="/operaweb/《蛟龙驹》段天焕选场.mp3" class="fa fa-music text-2xl"></a>
+                        </div>
+                        <div class="flex-grow text-center md:text-left mb-4 md:mb-0">
+                            <h4 class="font-bold text-lg">《蛟龙驹》</h4>
+                            <p class="text-gray-500">演奏：段天焕 | 时长：12:38</p>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <audio controls class="w-full md:w-auto">
+                                <source src="#" type="audio/mpeg">
+                                您的浏览器不支持音频播放
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-10">
+                    <a href="#" class="inline-block border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium px-8 py-3 rounded-full transition-colors">
+                        浏览全部影音资源 <i class="fa fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 传承创新部分 -->
+    <section id="inheritance" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">传承创新</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">关注阿宫腔的当下与未来，展示保护与发展的努力</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <!-- 当代名家 -->
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center">当代名家</h3>
+                
+                <div class="container mx-auto px-0 py-0">
+    <div class="grid lg:grid-cols-2 lg:gap-0 items-stretch bg-white shadow-xl rounded-xl overflow-hidden">
+        
+        <div class="w-full h-full bg-cover bg-center lg:rounded-l-xl" style="background-image: url('/operaweb/李曼1.webp');">
+            </div>
+
+        <div class="p-8 md:p-12">
+            <div class="flex items-center mb-4">
+                <img src="/operaweb/李曼2.jpeg" alt="李曼头像" class="w-16 h-16 rounded-full object-cover object-top mr-4 shadow-sm">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">李曼</h2>
+                    <p class="text-primary text-lg font-medium">陕西省戏剧演员</p>
+                </div>
+            </div>
+            
+            <p class="text-gray-700 leading-relaxed mb-6">
+                富平县阿宫腔剧团副团长，陕西省戏剧家协会会员。系渭南市非物质文化遗产项目阿宫腔代表性传承人，入选陕西省百名青年文学艺术家培养人才。
+            </p>
+
+            <h3 class="font-bold text-xl mb-3 text-gray-800">人物经历</h3>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                李曼，1986年出生于西安临潼，中共党员。1999年进入富平阿宫剧团工作至今，主工正小旦。2016年考入中国戏曲学院，本科学历。同时，她也是渭南市第五届政协委员。
+                <br><br>
+                从艺二十余年，凭着对阿宫腔艺术的执着追求，李曼虚心学习、不断超越，先后领衔主演阿宫腔《青天女巡按》、《王魁负义》、《白蛇传》等经典保留剧目及十余部秦腔剧目。
+            </p>
+
+            <h3 class="font-bold text-xl mb-3 text-gray-800">主要成就与荣誉</h3>
+            <ul class="list-disc list-inside space-y-2 text-gray-600 pl-4">
+                <li>曾获第五届“中国秦腔艺术节”优秀表演奖、陕西省“文华奖”大赛优秀演员奖、第六届和第七届“红梅”大赛一等奖/特等奖。</li>
+                <li>曾获渭南市“专业戏曲人才技能大赛一等奖”及“最佳演唱奖”、陕西省第五届“小戏小品”大赛一等奖、中国秦腔“优秀剧目会演”优秀奖。</li>
+                <li>被授予“先进工作者”、“十大杰出青年”、“ 三八红旗手”、“ 五四青年”、“拔尖人才”、“渭南好青年 ”及全市“德艺双馨”文艺工作者等荣誉称号。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+</style>
+            </div>
+            
+            <!-- 保护措施 -->
+           <div class="mb-20">
+    <h3 class="text-2xl font-bold mb-8 text-center">保护措施</h3>
+    
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="grid md:grid-cols-2 items-stretch">
+            <div class="bg-gray-100 flex items-center justify-center p-4"> <img src="/operaweb/保护.jpg" alt="阿宫腔数字化保护工作" class="max-h-full max-w-full object-contain">
+            </div>
+            
+            <div class="p-8 md:p-10">
+                <h4 class="text-xl font-bold mb-6 text-primary">非遗保护政策</h4>
+                <ul class="space-y-4">
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">国家级非遗名录收录</h5>
+                            <p class="text-gray-600">2006年，阿宫腔被列入第一批国家级非物质文化遗产名录，得到国家层面的保护与支持。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">保护单位资格认定与重新认定</h5>
+                            <p class="text-gray-600">2019年11月，富平县阿宫腔剧团获得皮影戏（阿宫腔）项目保护单位资格。随后，文化和旅游部于2023年10月31日公布名单，重新认定富平县阿宫腔传承中心（富平县阿宫剧团）为该项目保护单位，进一步巩固了其国家级保护地位。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">专项保护资金</h5>
+                            <p class="text-gray-600">政府设立专项保护资金，用于阿宫腔的传承、研究、人才培养和推广工作。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">传承人扶持计划</h5>
+                            <p class="text-gray-600">对国家级、省级传承人给予专项补贴，支持其开展传习活动，培养后继人才。</p>
+                        </div>
+                    </li>
+                </ul>
+                
+                <h4 class="text-xl font-bold mt-10 mb-6 text-primary">数字化存档工作</h4>
+                <ul class="space-y-4">
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">剧目数字化录制</h5>
+                            <p class="text-gray-600">对经典剧目进行高清录制和数字化存储，建立完整的阿宫腔剧目数据库。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">多媒体资源库建设</h5>
+                            <p class="text-gray-600">建立包含音频、视频、图片、文字等多种形式的阿宫腔多媒体资源库，方便研究与传播。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">开发沉浸式与交互式体验内容</h5>
+                            <p class="text-gray-600">利用数字化技术，突破传统录制的平面感，创造能让用户沉浸和互动的新内容形式，旨在吸引年轻受众。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">制定元数据标准与构建知识图谱</h5>
+                            <p class="text-gray-600">为确保资源库长期、规范地使用与发展，必须建立一套科学的信息描述标准，并最终构建知识图谱。</p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                            <i class="fa fa-check text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h5 class="font-bold">传承人艺术生命史建档工程</h5>
+                            <p class="text-gray-600">系统性地记录与保存传承人个体的艺术记忆与隐性知识，其核心是从“演什么”深入到“为什么这么演”。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-primary {
+        color: #your-primary-color; /* 请替换为您网站的主题色，例如：#E63946 */
+    }
+</style>
+
+<style>
+    .text-primary {
+        color: #your-primary-color; /* 请替换为您网站的主题色，例如：#E63946 */
+    }
+</style>
+            
+            <!-- 创新实践 -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-center">创新实践</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 教育推广 -->
+                    <div class="bg-white rounded-xl p-8 shadow-md">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-graduation-cap text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">教育推广活动</h4>
+                        <ul class="space-y-4 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>开展"阿宫腔进校园"活动，在中小学开设阿宫腔兴趣班和体验课程</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>与高校合作设立阿宫腔研究与传承基地，培养专业研究和表演人才</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>举办阿宫腔夏令营，让青少年近距离接触和学习传统戏曲文化</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>编写阿宫腔普及教材，制作教学视频，扩大教育覆盖面</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 技术创新 -->
+                    <div class="bg-white rounded-xl p-8 shadow-md">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fa fa-lightbulb-o text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">新技术应用</h4>
+                        <ul class="space-y-4 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>开发VR体验项目，让观众沉浸式感受阿宫腔表演的魅力</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>利用AR技术实现脸谱互动体验，增强观众参与感</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>通过新媒体平台开展线上直播演出，扩大阿宫腔的受众群体</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                <span>与现代音乐制作人合作，创作融合阿宫腔元素的新音乐作品</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 互动社区部分 -->
+    <section id="community" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">互动社区</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">与阿宫腔爱好者交流互动，共同参与传承与推广</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 论坛/留言板 -->
+                <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
+                    <div class="card-header">
+                        <div class="h-full bg-secondary flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white text-shadow">戏迷论坛</h3>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <!-- <img src="https://picsum.photos/id/1060/600/400" alt="阿宫腔戏迷论坛" class="w-full h-48 object-cover"> -->
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-6">
+                            供戏迷交流观剧心得、分享资料、讨论表演技巧，是阿宫腔爱好者的线上家园。
+                        </p>
+                        
+                        <h4 class="font-bold mb-3">热门话题</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden mr-3">
+                                    <!-- <img src="https://picsum.photos/id/1001/100/100" alt="用户头像" class="w-full h-full object-cover"> -->
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-sm"><a href="#" class="hover:text-primary">《赵氏孤儿》中程婴的人物塑造分析</a></h5>
+                                    <p class="text-xs text-gray-500">张戏迷 • 23人参与 • 今天 09:45</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden mr-3">
+                                    <!-- <img src="https://picsum.photos/id/1002/100/100" alt="用户头像" class="w-full h-full object-cover"> -->
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-sm"><a href="#" class="hover:text-primary">阿宫腔与其他秦腔流派的唱腔对比</a></h5>
+                                    <p class="text-xs text-gray-500">李戏迷 • 47人参与 • 昨天 15:30</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="block text-center bg-secondary hover:bg-secondary/90 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                            进入论坛
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 人才招募 -->
+                <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
+                    <div class="card-header">
+                        <div class="h-full bg-accent flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white text-shadow">人才招募</h3>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <!-- <img src="https://picsum.photos/id/1061/600/400" alt="阿宫腔人才招募" class="w-full h-48 object-cover"> -->
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-6">
+                            发布剧团招生、志愿者招募信息，为阿宫腔的传承与发展吸纳更多人才。
+                        </p>
+                        
+                        <div class="space-y-6 mb-6">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-primary mb-2">2023年阿宫腔青年演员培训班</h4>
+                                <p class="text-sm text-gray-600 mb-2">招募对象：16-22岁，对传统戏曲有兴趣者</p>
+                                <p class="text-sm text-gray-600 mb-2">报名截止：2023年6月30日</p>
+                                <a href="#" class="text-sm text-secondary hover:underline">查看详情 <i class="fa fa-angle-right ml-1"></i></a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-primary mb-2">阿宫腔推广志愿者招募</h4>
+                                <p class="text-sm text-gray-600 mb-2">工作内容：线上推广、活动组织、资料整理</p>
+                                <p class="text-sm text-gray-600 mb-2">招募人数：20名</p>
+                                <a href="#" class="text-sm text-secondary hover:underline">查看详情 <i class="fa fa-angle-right ml-1"></i></a>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="block text-center bg-accent hover:bg-accent/90 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                            查看所有招募
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 投稿专区 -->
+                <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
+                    <div class="card-header">
+                        <div class="h-full bg-primary flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white text-shadow">投稿专区</h3>
+                        </div>
+                    </div>
+                    <div class="mt-0">
+                        <!-- <img src="https://picsum.photos/id/1063/600/400" alt="阿宫腔投稿专区" class="w-full h-48 object-cover"> -->
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-6">
+                            鼓励用户上传自己拍摄的阿宫腔照片、视频、文章，分享您与阿宫腔的故事。
+                        </p>
+                        
+                        <div class="grid grid-cols-3 gap-2 mb-6">
+                            <!-- <img src="https://picsum.photos/id/1064/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
+                            <!-- <img src="https://picsum.photos/id/1065/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
+                            <!-- <img src="https://picsum.photos/id/1066/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
+                        </div>
+                        
+                        <form class="mb-6">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">投稿类型</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                    <option>摄影作品</option>
+                                    <option>视频作品</option>
+                                    <option>文章评论</option>
+                                    <option>音频录制</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">上传文件</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
+                                    <p class="text-sm text-gray-500">点击或拖拽文件到此处上传</p>
+                                    <input type="file" class="hidden" id="file-upload">
+                                    <label for="file-upload" class="mt-2 inline-block text-primary hover:underline text-sm cursor-pointer">选择文件</label>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <button class="w-full bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                            提交投稿
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 咨询中心部分 -->
+    <section id="info" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-neutral mb-4">咨询中心</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">发布官方动态和提供深入研究资源</p>
+                <div class="opera-divider w-32"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 新闻动态 -->
+                <div class="md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-8">新闻动态</h3>
+                    
+                    <div class="space-y-8">
+                        <div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+    <div class="md:w-1/3">
+        <img src="/operaweb/咨询1.jpg" alt="阿宫腔千年雅音经典流传" class="w-full h-full object-cover">
+    </div>
+    <div class="md:w-2/3 p-6">
+        <div class="flex items-center text-sm text-gray-500 mb-2">
+            <span class="mr-4"><i class="fa fa-calendar mr-1"></i> 2021-03-24</span>
+            <span><i class="fa fa-tag mr-1"></i> 文化传承</span>
+        </div>
+        <h4 class="text-xl font-bold mb-3"><a href="https://baijiahao.baidu.com/s?id=1695005082525169658&wfr=spider&for=pc" target="_blank" class="hover:text-primary">戏曲·阿宫腔｜千年雅音经典流传</a></h4>
+        <p class="text-gray-600 mb-4">
+            阿宫腔作为陕西传统戏曲，其古老的唱腔艺术和独特的文化魅力正在被更多人了解。通过一代代艺人的坚守与传承，这一千年雅音正以其独特的艺术形式焕发新的生机。
+        </p>
+        <a href="https://baijiahao.baidu.com/s?id=1695005082525169658&wfr=spider&for=pc" target="_blank" class="text-primary hover:underline inline-flex items-center">
+            阅读全文 <i class="fa fa-angle-right ml-1"></i>
+        </a>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+    <div class="md:w-1/3">
+        <img src="/operaweb/咨询2.jpg" alt="阿宫腔红梢林亮相陕西艺术节" class="w-full h-full object-cover">
+    </div>
+    <div class="md:w-2/3 p-6">
+        <div class="flex items-center text-sm text-gray-500 mb-2">
+            <span class="mr-4"><i class="fa fa-calendar mr-1"></i> 2020-11-10</span>
+            <span><i class="fa fa-tag mr-1"></i> 艺术展演</span>
+        </div>
+        <h4 class="text-xl font-bold mb-3"><a href="https://baijiahao.baidu.com/s?id=1682958210218864664&wfr=spider&for=pc" target="_blank" class="hover:text-primary">阿宫腔红色现代戏《红梢林》亮相第九届陕西艺术节</a></h4>
+        <p class="text-gray-600 mb-4">
+            富平县阿宫腔剧团携红色现代戏《红梢林》参演第九届陕西艺术节。该剧将传统阿宫腔与现代舞台艺术相结合，以创新的形式展现了红色故事，获得了观众和专家的一致好评。
+        </p>
+        <a href="https://baijiahao.baidu.com/s?id=1682958210218864664&wfr=spider&for=pc" target="_blank" class="text-primary hover:underline inline-flex items-center">
+            阅读全文 <i class="fa fa-angle-right ml-1"></i>
+        </a>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl overflow-hidden shadow-md flex flex-col md:flex-row card-hover">
+    <div class="md:w-1/3">
+        <img src="/operaweb/咨询3.jpg" alt="编剧曾长安的阿宫情缘" class="w-full h-full object-cover">
+    </div>
+    <div class="md:w-2/3 p-6">
+        <div class="flex items-center text-sm text-gray-500 mb-2">
+            <span class="mr-4"><i class="fa fa-calendar mr-1"></i> 2025-08-18</span>
+            <span><i class="fa fa-tag mr-1"></i> 人物专访</span>
+        </div>
+        <h4 class="text-xl font-bold mb-3"><a href="https://cul.sohu.com/a/925187030_100070275" target="_blank" class="hover:text-primary">编剧曾长安的阿宫情缘和农村情怀</a></h4>
+        <p class="text-gray-600 mb-4">
+            著名剧作家曾长安先生将自己对阿宫腔的热爱与对农村生活的深厚情怀融入到创作中。他的作品不仅丰富了阿宫腔的剧目，更以艺术的形式反映了时代变迁中的乡土文化。
+        </p>
+        <a href="https://cul.sohu.com/a/925187030_100070275" target="_blank" class="text-primary hover:underline inline-flex items-center">
+            阅读全文 <i class="fa fa-angle-right ml-1"></i>
+        </a>
+    </div>
+</div>
+                    </div>
+                    
+                    
+                </div>
+                
+                <!-- 学术资源和相关链接 -->
+                <div>
+                    <div>
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+        <h3 class="text-2xl font-bold mb-6">学术资源</h3>
+        
+        <h4 class="font-bold text-lg mb-4 text-primary">相关文献</h4>
+        <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+                <i class="fa fa-file-text-o text-primary mt-1 mr-3"></i>
+                <div>
+                    <a href="https://kns.cnki.net/kcms2/article/abstract?v=J4uTGPHNJK1VzNqsCoj7PvgH3_M1C_DkyS9D5tREgCjbEaMO0gChyXbbp3Idt7NQxz-N2jRAIYoPIy_yAylWSxpDTLiWBdmFhWUzOQMhyVAmSaTorL5SfAHXHNA5ias0MFW2W_R46Y4vRpmqGzVekLpiagXOQWYDRINaI0fCJMpzcgARWRlVEg==&uniplatform=NZKPT&language=CHS" class="hover:text-primary">《阿宫腔之我见》</a>
+                    <p class="text-sm text-gray-500">曾长安 • 2008</p>
+                </div>
+            </li>
+            <li class="flex items-start">
+                <i class="fa fa-file-text-o text-primary mt-1 mr-3"></i>
+                <div>
+                    <a href="https://kns.cnki.net/kcms2/article/abstract?v=J4uTGPHNJK05UPTxQ0DK2Ja6GLN9TFoR6jyTX3TnI0tcZ6rCyabtxBDY9LQVprWABIZakSdoYl8OOgYi2QTgNLOYogAgnUZu3mxw8ZB5W5L3W9lbQJ24KWteQdpG1J3tTDvGdWGrdyMPTJGkKCLtIJ6P_T5zYcfNGJVklaMVNsimKYT6v50nyQ==&uniplatform=NZKPT&language=CHS" class="hover:text-primary">《富平阿宫腔采访手记》</a>
+                    <p class="text-sm text-gray-500">南璐 • 2008</p>
+                </div>
+            </li>
+            <li class="flex items-start">
+                <i class="fa fa-file-text-o text-primary mt-1 mr-3"></i>
+                <div>
+                    <a href="https://kns.cnki.net/kcms2/article/abstract?v=J4uTGPHNJK3ny-ECy4aSnsDI-t5GkJsH8pTficxQxXyA3NRTtN-jtuVb2qybeGN5RAqqt_NJDhEpIj53AotPDSRsA6JpCrk-Kiq46kJjL-6o7EM-76P5dGAi6Q0sIbSeh6aX3zx7MSJlGD7maKaup2bIfAYR3PiT9QnxKlLdHH93bnuAbw4BOx7NPviN6ctE&uniplatform=NZKPT&language=CHS" class="hover:text-primary">《媒介环境变迁下的阿宫腔传播探析》</a>
+                    <p class="text-sm text-gray-500">陈诗言 • 2019</p>
+                </div>
+            </li>
+        </ul>
+        
+        <h4 class="font-bold text-lg mb-4 text-primary">专著推荐</h4>
+        <ul class="space-y-3">
+            <li class="flex items-start">
+                <i class="fa fa-book text-primary mt-1 mr-3"></i>
+                <div>
+                    <a href="https://mall.cnki.net/reference/read-R2017104190005189.html" class="hover:text-primary">《中国戏曲志·陕西卷》</a>
+                    <p class="text-sm text-gray-500">中国戏曲志编辑委员会</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+                    
+                    <!-- 相关链接 -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+    <h3 class="text-2xl font-bold mb-6">相关链接</h3>
+    
+    <ul class="space-y-4">
+        <li class="flex items-center">
+            <a href="https://www.ihchina.cn" target="_blank" class="flex items-center hover:text-primary transition-colors">
+                <i class="fa fa-link text-primary mr-3"></i>
+                <span>中国非物质文化遗产网</span>
+            </a>
+        </li>
+        <li class="flex items-center">
+            <a href="https://whhlyt.shaanxi.gov.cn" target="_blank" class="flex items-center hover:text-primary transition-colors">
+                <i class="fa fa-link text-primary mr-3"></i>
+                <span>陕西省文化和旅游厅</span>
+            </a>
+        </li>
+        <li class="flex items-center">
+            <a href="https://www.chinatheatre.org.cn" target="_blank" class="flex items-center hover:text-primary transition-colors">
+                <i class="fa fa-link text-primary mr-3"></i>
+                <span>中国戏剧家协会</span>
+            </a>
+        </li>
+        <li class="flex items-center">
+            <a href="http://www.sxqq.net" target="_blank" class="flex items-center hover:text-primary transition-colors">
+                <i class="fa fa-link text-primary mr-3"></i>
+                <span>陕西省戏曲研究院</span>
+            </a>
+        </li>
+        <li class="flex items-center">
+            <a href="http://www.xakcyf.com/" target="_blank" class="flex items-center hover:text-primary transition-colors">
+                <i class="fa fa-link text-primary mr-3"></i>
+                <span>秦腔艺术网</span>
+            </a>
+        </li>
+    </ul>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-neutral text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-10">
+                <!-- 关于我们 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">关于阿宫腔</h3>
+                    <p class="text-gray-300 mb-4">
+                        阿宫腔是中国古老的传统戏曲剧种之一，2006年被列入第一批国家级非物质文化遗产名录，是陕西地区重要的文化瑰宝。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fa fa-youtube-play text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 快速链接 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="#origin" class="text-gray-300 hover:text-white transition-colors">探本溯源</a></li>
+                        <li><a href="#art" class="text-gray-300 hover:text-white transition-colors">艺术宝库</a></li>
+                        <li><a href="#media" class="text-gray-300 hover:text-white transition-colors">影音馆</a></li>
+                        <li><a href="#inheritance" class="text-gray-300 hover:text-white transition-colors">传承创新</a></li>
+                        <li><a href="#community" class="text-gray-300 hover:text-white transition-colors">互动社区</a></li>
+                        <li><a href="#info" class="text-gray-300 hover:text-white transition-colors">咨询中心</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 联系方式 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">联系方式</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-accent mt-1 mr-3"></i>
+                            <span class="text-gray-300">陕西省西安市碑林区文艺北路197号</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone text-accent mr-3"></i>
+                            <span class="text-gray-300">029-87876543</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope text-accent mr-3"></i>
+                            <span class="text-gray-300">aqiang@example.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 订阅 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">订阅资讯</h3>
+                    <p class="text-gray-300 mb-4">
+                        订阅我们的电子通讯，及时获取阿宫腔最新演出信息和活动通知。
+                    </p>
+                    <form>
+                        <div class="flex">
+                            <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-neutral">
+                            <button type="submit" class="bg-primary hover:bg-primary/90 text-white px-4 rounded-r-lg transition-colors">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>© 2023 阿宫腔非遗文化保护中心 版权所有 | 陕ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 invisible">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-scrolled');
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-bars');
+            }
+        });
+        
+        // 关闭移动菜单（当点击菜单项时）
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.replace('fa-times', 'fa-bars');
+            });
+        });
+        
+        // 新闻滚动效果
+        const newsTicker = document.getElementById('news-ticker');
+        let tickerPosition = 0;
+        const tickerSpeed = 1;
+        
+        function animateTicker() {
+            if (newsTicker) {
+                tickerPosition -= tickerSpeed;
+                if (tickerPosition < -newsTicker.offsetWidth / 2) {
+                    tickerPosition = 0;
+                }
+                newsTicker.style.transform = `translateX(${tickerPosition}px)`;
+            }
+            requestAnimationFrame(animateTicker);
+        }
+        
+        animateTicker();
+        
+        // 返回顶部功能
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 图片懒加载
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll("img");
+            
+            if ("IntersectionObserver" in window) {
+                const imageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            const image = entry.target;
+                            image.classList.add('fade-in');
+                            imageObserver.unobserve(image);
+                        }
+                    });
+                });
+                
+                lazyImages.forEach(function(image) {
+                    imageObserver.observe(image);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
