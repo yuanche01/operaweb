@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
-    <!-- 6. 互动社区部分 -->
+     <!-- 6. 互动社区部分 -->
     <section id="community" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
@@ -1077,7 +1077,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="opera-divider w-32"></div>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
+            <!-- === 修改 grid-cols-3 为 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 以便更好地容纳新卡片 === -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+
+                <!-- === 新增互动游戏入口卡片 开始 === -->
+                <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden xl:col-span-2 card-hover">
+                    <div class="card-header">
+                        <div class="h-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
+                            <h3 class="text-2xl font-bold text-white text-shadow"><i class="fa fa-gamepad mr-2"></i> 互动剧场</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h4 class="text-xl font-bold text-neutral mb-3">《王魁负义》互动游戏</h4>
+                        <p class="text-gray-600 mb-6">
+                            亲身体验经典剧目《王魁负义》的剧情，在关键时刻做出你的选择，探索不同的故事分支，亲手决定王魁与敫桂英的命运。
+                        </p>
+                        <a href="gal.html" target="_blank" class="inline-block w-full bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-colors transform hover:scale-105">
+                            进入互动剧场
+                        </a>
+                    </div>
+                </div>
+                <!-- === 新增互动游戏入口卡片 结束 === -->
+
                 <!-- 论坛/留言板 -->
                 <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
                     <div class="card-header">
@@ -1158,52 +1179,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 
-                <!-- 投稿专区 -->
-                <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
-                    <div class="card-header">
-                        <div class="h-full bg-primary flex items-center justify-center">
-                            <h3 class="text-2xl font-bold text-white text-shadow">投稿专区</h3>
-                        </div>
-                    </div>
-                    <div class="mt-0">
-                        <!-- <img src="https://picsum.photos/id/1063/600/400" alt="阿宫腔投稿专区" class="w-full h-48 object-cover"> -->
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-6">
-                            鼓励用户上传自己拍摄的阿宫腔照片、视频、文章，分享您与阿宫腔的故事。
-                        </p>
-                        
-                        <div class="grid grid-cols-3 gap-2 mb-6">
-                            <!-- <img src="https://picsum.photos/id/1064/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
-                            <!-- <img src="https://picsum.photos/id/1065/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
-                            <!-- <img src="https://picsum.photos/id/1066/300/300" alt="用户投稿作品" class="w-full h-20 object-cover rounded"> -->
-                        </div>
-                        
-                        <form class="mb-6">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">投稿类型</label>
-                                <select class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <option>摄影作品</option>
-                                    <option>视频作品</option>
-                                    <option>文章评论</option>
-                                    <option>音频录制</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">上传文件</label>
-                                <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
-                                    <p class="text-sm text-gray-500">点击或拖拽文件到此处上传</p>
-                                    <input type="file" class="hidden" id="file-upload">
-                                    <label for="file-upload" class="mt-2 inline-block text-primary hover:underline text-sm cursor-pointer">选择文件</label>
-                                </div>
-                            </div>
-                        </form>
-                        
-                        <button class="w-full bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-colors">
-                            提交投稿
-                        </button>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
@@ -1548,6 +1524,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 </body>
 </html>
+
 
 
 
