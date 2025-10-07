@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>王魁负义 - 互动版 (精修版)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
-
+        
         :root {
             --text-color: #EAEAEA;
             --name-color: #E7B561;
@@ -14,7 +17,9 @@
             --choice-bg: rgba(15, 25, 40, 0.85);
             --choice-hover-bg: rgba(40, 60, 90, 0.95);
             --choice-border: rgba(173, 216, 230, 0.5);
-            --font-family: 'Noto Serif SC', serif;
+
+            --font-family: "Inter", sans-serif; 
+            --chinese-font: "Zhi Mang Xing", cursive;
         }
 
         body, html {
@@ -117,6 +122,7 @@
             font-weight: bold;
             color: var(--name-color);
             text-shadow: 1px 1px 2px #000;
+            font-family: var(--chinese-font);
         }
 
         #dialogue-text {
@@ -126,6 +132,7 @@
             margin: 0;
             padding-top: 15px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            font-family: var(--chinese-font);
         }
         
         #dialogue-text::after {
@@ -222,12 +229,14 @@
             color: var(--name-color);
             text-shadow: 0 0 15px var(--name-color), 0 0 20px #000;
             margin-top: 0;
+            font-family: var(--chinese-font);
         }
         
         #end-screen h2 {
             font-size: 3em;
             color: var(--name-color);
             text-shadow: 0 0 10px var(--name-color);
+            font-family: var(--chinese-font);
         }
 
         #start-screen p, #end-screen p {
@@ -236,6 +245,7 @@
             line-height: 1.8;
             text-shadow: 1px 1px 3px #000;
             margin: 0 auto 20px;
+            font-family: var(--chinese-font);
         }
 
         @media (max-width: 768px) {
