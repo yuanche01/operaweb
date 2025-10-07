@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王魁负义 - 互动版 (精修版)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
+
+        :root {
+            --text-color: #EAEAEA;
+            --name-color: #E7B561;
+            --dialogue-bg: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            --choice-bg: rgba(15, 25, 40, 0.85);
+            --choice-hover-bg: rgba(40, 60, 90, 0.95);
+            --choice-border: rgba(173, 216, 230, 0.5);
+            --font-family: 'Noto Serif SC', serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: var(--font-family);
+            color: var(--text-color);
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+        }
+
+        #music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(15, 25, 40, 0.85);
+            border: 2px solid var(--choice-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 15;
+            transition: all 0.3s ease;
+        }
+        #music-control:hover {
+            background-color: var(--choice-hover-bg);
+            border-color: var(--name-color);
+            transform: scale(1.1);
+        }
+        #music-icon {
+            color: var(--text-color);
+            font-size: 1.5em;
+        }
+
+        #character-sprite {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 95%;
+            max-width: 100%;
+            object-fit: contain;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 0;
+            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.5));
+            z-index: 5;
+        }
+        
+        .hidden {
+            opacity: 0 !important;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        #dialogue-box {
+            position: absolute;
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            height: 30vh;
+            background: var(--dialogue-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 25px 35px;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 10;
+        }
+
+        #character-name {
+            background-color: rgba(10, 20, 40, 0.9);
+            padding: 8px 20px;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+            position: absolute;
+            top: -42px;
+            left: 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--name-color);
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        #dialogue-text {
+            flex-grow: 1;
+            font-size: 1.5em;
+            line-height: 1.7;
+            margin: 0;
+            padding-top: 15px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+        }
+        
+        #dialogue-text::after {
+            content: '▼';
+            position: absolute;
+            right: 40px;
+            bottom: 20px;
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        #choices-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 60%;
+            max-width: 600px;
+            z-index: 10;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .choice-button {
+            padding: 20px 25px;
+            background-color: var(--choice-bg);
+            color: var(--text-color);
+            border: 2px solid var(--choice-border);
+            border-radius: 10px;
+            font-size: 1.3em;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-family: var(--font-family);
+        }
+
+        .choice-button:hover {
+            background-color: var(--choice-hover-bg);
+            transform: scale(1.05);
+            border-color: var(--name-color);
+            box-shadow: 0 0 15px var(--name-color);
+            color: #fff;
+        }
+
+        #start-screen, #end-screen {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 20;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* 添加的开始页面背景图片样式 */
+        #start-screen {
+            /* 替换为你的本地背景图片路径 */
+            background-image: url('image_final/image_final_0.png');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* 添加半透明遮罩使文字更清晰 */
+        #start-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        
+        /* 确保文字显示在遮罩上方 */
+        #start-screen > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        #start-screen h1, #end-screen h1 {
+            font-size: 5em;
+            margin-bottom: 20px;
+            color: var(--name-color);
+            text-shadow: 0 0 15px var(--name-color), 0 0 20px #000;
+            margin-top: 0;
+        }
+        
+        #end-screen h2 {
+            font-size: 3em;
+            color: var(--name-color);
+            text-shadow: 0 0 10px var(--name-color);
+        }
+
+        #start-screen p, #end-screen p {
+            font-size: 1.6em;
+            max-width: 60%;
+            line-height: 1.8;
+            text-shadow: 1px 1px 3px #000;
+            margin: 0 auto 20px;
+        }
+
+        @media (max-width: 768px) {
+            #dialogue-box {
+                height: 40vh;
+                padding: 15px 20px;
+            }
+            #character-name {
+                top: -35px;
+                left: 20px;
+                font-size: 1.1em;
+                padding: 5px 15px;
+            }
+            #dialogue-text {
+                font-size: 1.2em;
+                line-height: 1.6;
+            }
+            #dialogue-text::after {
+                right: 20px;
+                bottom: 15px;
+            }
+            #choices-box {
+                width: 90%;
+                gap: 15px;
+            }
+            .choice-button {
+                font-size: 1.1em;
+                padding: 15px 20px;
+            }
+            #start-screen h1, #end-screen h1 {
+                font-size: 3em;
+            }
+            #start-screen p, #end-screen p {
+                font-size: 1.3em;
+                max-width: 90%;
+            }
+            #music-control {
+                width: 40px;
+                height: 40px;
+            }
+            #music-icon {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="music-control">
+            <span id="music-icon">♪</span>
+        </div>
+
+        <img id="character-sprite" src="" alt="Character">
+        <div id="dialogue-box" class="hidden">
+            <div id="character-name"></div>
+            <p id="dialogue-text"></p>
+        </div>
+        <div id="choices-box" class="hidden"></div>
+    </div>
+
+    <div id="start-screen">
+        <h1>王魁负义</h1>
+        <p>阿宫腔改编・互动版</p>
+        <p>【 点击任意处开始 】</p>
+    </div>
+    
+    <div id="end-screen" class="hidden">
+        <h2 id="end-title"></h2>
+        <p id="end-text"></p>
+        <p style="margin-top: 50px;">【 点击任意处重新开始 】</p>
+    </div>
+
+    <audio id="background-music" loop preload="auto">
+        <source src="music.m4a" type="audio/mpeg">
+        您的浏览器不支持音频播放，请更新浏览器。
+    </audio>
+
+
+    <script>
+        const bgMusic = document.getElementById('background-music');
+        const musicControl = document.getElementById('music-control');
+        const musicIcon = document.getElementById('music-icon');
+        let isMusicPlaying = false;
+
+        window.addEventListener('load', () => {
+            document.body.addEventListener('click', initMusicOnFirstClick, { once: true });
+        });
+
+        function initMusicOnFirstClick() {
+            playMusic();
+            musicControl.addEventListener('click', toggleMusic);
+        }
+
+        function playMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.textContent = '♪';
+                }).catch(err => {
+                    console.log('音乐播放失败（浏览器限制）：', err);
+                });
+            }
+        }
+
+        function pauseMusic() {
+            if (!bgMusic.paused) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicIcon.textContent = '⊡';
+            }
+        }
+
+        function toggleMusic(e) {
+            e.stopPropagation();
+            isMusicPlaying ? pauseMusic() : playMusic();
+        }
+
+        const ASSETS = {
+            bg: {
+                temple: 'https://images.unsplash.com/photo-1588624233793-933c99238934?q=80&w=1920&auto=format&fit=crop',
+                courtyard: 'https://images.unsplash.com/photo-1549488344-cbb6c34cf08b?q=80&w=1920&auto=format&fit=crop',
+                palace: 'https://images.unsplash.com/photo-1543786224-f79a9307889e?q=80&w=1920&auto=format&fit=crop',
+                ruined_temple: 'https://images.unsplash.com/photo-1618123537248-26241a32a685?q=80&w=1920&auto=format&fit=crop',
+                tavern: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1920&auto=format&fit=crop',
+                execution_ground: 'https://images.unsplash.com/photo-1586923485002-15a0105b2b2b?q=80&w=1920&auto=format&fit=crop',
+                guiying_courtyard: 'https://images.unsplash.com/photo-1564266148541-1b304e2eded6?q=80&w=1920&auto=format&fit=crop',
+                capital_street: 'https://images.unsplash.com/photo-1559925393-8be0ec496e58?q=80&w=1920&auto=format&fit=crop',
+                prime_minister_mansion: 'https://images.unsplash.com/photo-1578307988485-3696e0c11935?q=80&w=1920&auto=format&fit=crop',
+                tomb: 'https://images.unsplash.com/photo-1582560476694-7612221666c5?q=80&w=1920&auto=format&fit=crop'
+            },
+            char: {
+                wang_kui_poor: 'https://image.lexica.art/full_webp/71c69991-64d5-4560-9113-1f7c4623fdde',
+                wang_kui_official: 'https://image.lexica.art/full_webp/4d5a9d35-3c97-4252-a5e2-6ed822c95e6f',
+                jiao_guiying: 'https://image.lexica.art/full_webp/3c5b597c-9b87-4384-93e1-7d14d2459c5d',
+                jiao_guiying_bride: 'https://image.lexica.art/full_webp/c6397fd5-6c71-4ac3-b5bd-267980598075',
+            }
+        };
+
+        const storyData = {
+            start: [
+                { type: 'background', image: 'image_final/image_final_1.png' },
+                { type: 'narration', text: '海神庙前香烟缭绕，香客往来不绝。' },
+                { type: 'character', sprite: 'image_final/image_final_2.png', show: true },
+                { type: 'narration', text: '王魁身着洗得发白的青衫，面色蜡黄，一手攥着落榜文书，眼神黯淡地望着往来人群，尽显饥寒交迫之态。' },
+                { type: 'character', sprite: 'image_final/image_final_3.png', show: true },
+                { type: 'narration', text: '远处，敫桂英身着淡绿罗裙，由丫鬟搀扶着缓步走来，气质温婉如画。' },
+                { type: 'narration', text: '大比落第，王魁耗尽盘缠，流落至此；名妓敫桂英心怀善念，今日特来焚香祈福。一场命运的邂逅，正悄然展开。' },
+                { type: 'character', sprite:'image_final/image_final_4.png', show: true },
+                { type: 'background', image: 'image_final/image_final_5.png' },
+                { type: 'dialogue', character: '王魁 (内心)', text: '我空有满腹经纶，却落得如此境地……那位姑娘气质非凡，若能搭话，或许能寻得转机？可我这般狼狈，又怎能唐突佳人？' },
+                { type: 'choice', options: [ 
+                    { text: '整理衣襟，上前行礼。', target: 'branch_1_start' }, 
+                    { text: '低头缩在角落，避开她。', target: 'branch_2_start' }, 
+                    { text: '上前讨些吃食。', target: 'branch_3_start' } 
+                ]}
+            ],
+            branch_1_start: [
+                { type: 'background', image: 'image_final/image_final_6.png' },
+                { type: 'dialogue', character: '王魁', text: '姑娘安好，在下王魁，因落榜落魄于此，见姑娘气度不凡，斗胆叨扰，不知可否借一步说话？' },
+                { type: 'character', sprite: 'image_final/image_final_7.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '公子不必多礼，小女子敫桂英。看公子模样，似是有为才俊，落榜不过一时，何必颓丧？' },
+                { type: 'character', sprite: 'image_final/image_final_8.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '公子若不嫌弃，小女子府中尚有闲置院落，可容公子暂住读书，饮食衣物也由我备好。' },
+                { type: 'character', sprite: 'image_final/image_final_9.png' ,show: true },
+                { type: 'dialogue', character: '王魁', text: '姑娘大恩，王魁没齿难忘！若有来日，必当涌泉相报！' },
+                { type: 'jump', target: 'chapter_2_main' }
+            ],
+            branch_2_start: [
+                { type: 'background', image:'image_final/image_final_10.png' },
+                { type: 'narration', text: '敫桂英路过，注意到他手中的落榜文书，让丫鬟取来银子和糕点放在他脚边，便悄然离开。' },
+                { type: 'character', sprite: 'image_final/image_final_11.png' ,show: true },
+                { type: 'narration', text: '王魁待她们走远，拿起银子和糕点，望着敫桂英的背影，眼中满是复杂。' },
+                { type: 'character', sprite: 'image_final/image_final_11.png' ,show: true },
+                { type: 'dialogue', character: '王魁 (内心)', text: '她竟这般善良……可我连谢都不敢说，日后若有机会，再报答她吧。' },
+                { type: 'choice', options: [ 
+                    { text: '用银子买书苦读，日后谢恩。', target: 'branch_2_1' }, 
+                    { text: '拿着银子去酒馆，先快活几日。', target: 'branch_2_2' } 
+                ]}
+            ],
+            branch_2_1: [
+                { type: 'character', sprite: 'image_final/image_final_13.png' ,show: true },
+                { type: 'narration', text: '一年后，王魁身着新衫，手持“二甲进士”捷报，打探敫桂英消息，却得知她早已病逝。' },
+                { type: 'character', sprite: 'image_final/image_final_13.png' ,show: true },
+                { type: 'narration', text: '王魁手中的捷报掉在地上，冲进她生前的宅院，只见院中荒草萋萋。' },
+                { type: 'background', image: 'image_final/image_final_13.png' },
+                { type: 'ending', title: '结局・悲剧', text: '王魁在敫桂英墓前守了三年，此后虽官至知府，却终身未娶。他终其一生，都活在“未能谢恩”的悔恨中。' }
+            ],
+            branch_2_2: [
+                { type: 'background', image: 'image_final/image_final_16.png' },
+                { type: 'narration', text: '王魁在酒馆喝得酩酊大醉，银子很快花光，又变回落魄模样。' },
+                { type: 'background', image: 'image_final/image_final_17.png' },
+                { type: 'narration', text: '一日，他在街头乞讨时，被敫桂英的丫鬟认出，丫鬟皱眉扔下一枚铜钱便走了。' },
+                { type: 'character', sprite: 'image_final/image_final_17.png' ,show: true },
+                { type: 'narration', text: '王魁攥着铜钱，看着自己满是污垢的手，突然痛哭流涕。' },
+                { type: 'background', image: 'image_final/image_final_19.png'  },
+                { type: 'ending', title: '结局・悲剧', text: '王魁此后愈发消沉，最终在一个寒冬，冻饿而死在海神庙的墙角，至死都没机会说一句“谢谢”。' }
+            ],
+            branch_3_start: [
+                { type: 'background', image: 'image_final/image_final_20.png'  },
+                { type: 'dialogue', character: '王魁', text: '姑娘……在下已三日未食，能否赏些吃食？日后定当归还。' },
+                { type: 'character', sprite: 'image_final/image_final_21.png' , show: true },
+                { type: 'dialogue', character: '敫桂英', text: '公子莫急，慢慢吃。若不嫌弃，可随我回府，先解决温饱，再图日后。' },
+                { type: 'background', image: 'image_final/image_final_22.png'  },
+                { type: 'narration', text: '回府后，王魁吃饱穿暖，看着敫桂英精致的宅院，心中暗忖...' },
+                { type: 'character', sprite: 'image_final/image_final_23.png' , show: true },
+                { type: 'dialogue', character: '王魁 (内心)', text: '她是名妓，府中定然有钱……若能借些银子打点关系，或许能更快考中。' },
+                { type: 'choice', options: [ 
+                    { text: '诚心道谢，承诺日后报恩。', target: 'branch_3_1' }, 
+                    { text: '试探着开口，再借百两银子。', target: 'branch_3_2' } 
+                ]}
+            ],
+            branch_3_1: [
+                { type: 'background', image: 'image_final/image_final_24.png' },
+                { type: 'dialogue', character: '王魁', text: '姑娘的恩情，我记在心里，日后考中，定当归还所有花费，再报此恩。' },
+                { type: 'character', sprite: 'image_final/image_final_25.png' , show: true },
+                { type: 'dialogue', character: '敫桂英', text: '公子不必急着还钱，安心读书便是。我帮你，是看中你的才华，并非图回报。' },
+                { type: 'character', sprite: 'image_final/image_final_26.png' , show: true },
+                { type: 'narration', text: '半年后，王魁进京赶考。考中状元后，被皇帝欲招为驸马。' },
+                { type: 'background', image: 'image_final/image_final_27.png' },
+                { type: 'narration', text: '王魁站在皇宫中，手中攥着桂英送的香囊，最终对皇帝说：“臣已有婚约在身，不敢辜负佳人。”' },
+                { type: 'character', sprite: 'image_final/image_final_27.png', show: true },
+                { type: 'ending', title: '结局・佳话', text: '王魁拒绝驸马，赶回故乡，在海神庙前迎娶敫桂英。此后二人夫妻和睦，王魁为官清廉，成为一段佳话。' }
+            ],
+            branch_3_2: [
+                { type: 'background', image: 'image_final/image_final_30.png'},
+                { type: 'dialogue', character: '王魁', text: '姑娘府中宽裕，能否再借我百两银子？我想打点考官，若能考中，定加倍奉还。' },
+                { type: 'character', sprite:'image_final/image_final_30.png', show: true },
+                { type: 'narration', text: '敫桂英眼中闪过一丝失望，但还是变卖银钗，凑了百两银子给他。' },
+                { type: 'character', sprite: 'image_final/image_final_31.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '希望你莫要忘了，读书是为了报国，而非投机取巧。' },
+                { type: 'character', sprite: 'image_final/image_final_32.png', show: true },
+                { type: 'narration', text: '王魁用银子打点考官，却因作弊被揭发，不仅取消资格，还被流放边疆。' },
+                { type: 'background', image:'image_final/image_final_32.png' },
+                { type: 'narration', text: '流放途中，他看到敫桂英在庙前焚香，她只是默默叹了口气，转身离开。' },
+                { type: 'character', sprite: 'image_final/image_final_34.png', show: true },
+                { type: 'ending', title: '结局・悲剧', text: '王魁在边疆受尽苦难，三年后病逝。临死前，他才明白自己为了“捷径”，辜负了唯一对他好的人。' }
+            ],
+            chapter_2_main: [
+                { type: 'character', sprite: 'image_final/image_final_35.png', show: true },
+                { type: 'narration', text: '在敫桂英府上，王魁奋笔疾书，敫桂英则在一旁温柔照料。' },
+                { type: 'character', sprite: 'image_final/image_final_35.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '王郎，歇会儿吧，别累坏了身子。' },
+                { type: 'character', sprite: 'image_final/image_final_35.png', show: true },
+                { type: 'dialogue', character: '王魁', text: '有你在，我便有无限动力。' },
+                { type: 'background', image:'image_final/image_final_38.png' },
+                { type: 'narration', text: '一年时光转瞬即逝，进京科考的日子临近，二人约定，在海神庙前盟誓。' },
+                { type: 'character', sprite: 'image_final/image_final_39.png', show: true, hideOther: true},
+                { type: 'narration', text: '海神庙前，烛火通明。王魁与敫桂英并肩跪在神像前。' },
+                { type: 'character', sprite: 'image_final/image_final_40.png', show: true },
+                { type: 'dialogue', character: '王魁 (内心)', text: '桂英为我付出这么多，若我考中，定要风风光光娶她。可京城繁华，若遇到更好的机会……不，我不能忘恩义！' },
+                { type: 'choice', options: [ 
+                    { text: '发下毒誓：若负心，愿受天打雷劈！', target: 'branch_oath_heavy' }, 
+                    { text: '做出承诺：无论中否，三月必回。', target: 'branch_oath_light' } 
+                ]}
+            ],
+            branch_oath_heavy: [
+                { type: 'character', sprite: 'image_final/image_final_41.png', show: true },
+                { type: 'dialogue', character: '王魁', text: '海神在上！我王魁若金榜题名，必即刻归乡，迎娶桂英！若违此誓，愿受天打雷劈，不得善终！' },
+                { type: 'character', sprite: 'image_final/image_final_42.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '海神见证，我此生只认王魁一人，无论富贵贫贱，都生死相随。' },
+                { type: 'character', sprite: 'image_final/image_final_43.png', show: true },
+                { type: 'narration', text: '王魁进京后考中状元，被丞相看中，欲招为女婿。' },
+                { type: 'background', image: 'image_final/image_final_44.png' },
+                { type: 'narration', text: '丞相府中，锦缎铺路，珠宝满堂。王魁看着丞相女儿的美貌，心中的天平开始倾斜。' },
+                { type: 'choice', options: [ 
+                    { text: '拒绝丞相：在下已有婚约。', target: 'ending_good_reject' }, 
+                    { text: '点头答应：愿娶丞相千金。', target: 'ending_bad_betrayal' } 
+                ]}
+            ],
+            branch_oath_light: [
+                { type: 'background', image: 'image_final/image_final_45.png'},
+                { type: 'dialogue', character: '王魁', text: '桂英，我此去京城，无论考中与否，三个月内必回来见你。' },
+                { type: 'character', sprite: 'image_final/image_final_46.png', show: true },
+                { type: 'dialogue', character: '敫桂英', text: '我信你。无论你考中与否，我都等你回来。' },
+                { type: 'character', sprite: 'image_final/image_final_47.png', show: true },
+                { type: 'narration', text: '王魁考中探花，没有接受任何权贵拉拢，直接向皇帝请旨，回乡迎娶敫桂英。' },
+                { type: 'background', image: 'image_final/image_final_48.png' },
+                { type: 'narration', text: '皇帝被他的“守信”打动，不仅准奏，还亲自赐婚。' },
+                { type: 'character', sprite: 'image_final/image_final_49.png', show: true },
+                { type: 'ending', title: '结局・守信传奇', text: '王魁带着圣旨风光迎娶敫桂英。二人成为京城模范夫妻，为官清正，广做善事，他们的故事成为比原文更温暖的传奇。' }
+            ],
+            ending_good_reject: [
+                { type: 'background', image: 'image_final/image_final_51.png' },
+                { type: 'narration', text: '王魁拒绝丞相后，连夜赶回故乡，在海神庙前看到已苦等一月的敫桂英。' },
+                { type: 'character', sprite: 'image_final/image_final_51.png', show: true },
+                { type: 'dialogue', character: '王魁', text: '桂英，我回来了，我没负你！' },
+                { type: 'character', sprite: 'image_final/image_final_52.png', show: true },
+                { type: 'ending', title: '结局・守信状元', text: '二人在海神庙成婚，婚后王魁为官清廉，时常告诫自己莫忘初心。二人携手一生，子孙满堂，成为民间流传的佳话。' }
+            ],
+            ending_bad_betrayal: [
+                { type: 'background', image: 'image_final/image_final_53.png' },
+                { type: 'narration', text: '王魁与丞相女儿成婚，很快忘了海神庙前的誓言。' },
+                { type: 'background', image: 'image_final/image_final_53.png' },
+                { type: 'narration', text: '敫桂英等了半年，只等来一封休书。她跪在海神庙前，以性命为祭，求神明罚他。三日后，自缢于庙前树下。' },
+                { type: 'character', sprite: 'image_final/image_final_55.png', show: true },
+                { type: 'narration', text: '一年后，王魁因贪赃枉法被押赴刑场，天空突然电闪雷鸣，一道雷劈在他身上。' },
+                { type: 'background', image: 'image_final/image_final_56.png' },
+                { type: 'ending', title: '结局・违誓遭天谴', text: '王魁死后，百姓都说他是“违誓遭天谴”，他的名字被钉在“忘恩负义”的耻辱柱上，流传千年。这便是《王魁负义》的经典结局。' }
+            ]
+        };
+
+        const gameContainer = document.getElementById('game-container');
+        const characterSprite = document.getElementById('character-sprite');
+        const dialogueBox = document.getElementById('dialogue-box');
+        const characterName = document.getElementById('character-name');
+        const dialogueText = document.getElementById('dialogue-text');
+        const choicesBox = document.getElementById('choices-box');
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const endTitle = document.getElementById('end-title');
+        const endText = document.getElementById('end-text');
+
+        let gameState = { currentScene: null, currentIndex: 0, isTyping: false, typingInterval: null };
+        
+        function typewriter(text, onComplete) {
+            let i = 0;
+            dialogueText.innerHTML = '';
+            gameState.isTyping = true;
+            if (gameState.typingInterval) clearInterval(gameState.typingInterval);
+            gameState.typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    dialogueText.innerHTML += text.charAt(i); i++;
+                } else {
+                    clearInterval(gameState.typingInterval);
+                    gameState.typingInterval = null;
+                    gameState.isTyping = false;
+                    if (onComplete) onComplete();
+                }
+            }, 50);
+        }
+
+        function skipTyping() {
+            if (gameState.isTyping) {
+                clearInterval(gameState.typingInterval);
+                gameState.typingInterval = null;
+                const scene = storyData[gameState.currentScene];
+                if (scene && scene[gameState.currentIndex - 1]) {
+                    dialogueText.innerHTML = scene[gameState.currentIndex - 1].text;
+                }
+                gameState.isTyping = false;
+            }
+        }
+
+        function showScene(sceneId) {
+            gameState.currentScene = sceneId;
+            gameState.currentIndex = 0;
+            choicesBox.classList.add('hidden');
+            dialogueBox.classList.remove('hidden');
+            gameContainer.style.cursor = 'pointer';
+            nextStep();
+        }
+
+        function nextStep() {
+            if (gameState.isTyping) { skipTyping(); return; }
+            const scene = storyData[gameState.currentScene];
+            if (!scene || gameState.currentIndex >= scene.length) return;
+            const step = scene[gameState.currentIndex];
+            gameState.currentIndex++;
+            switch (step.type) {
+                case 'background': 
+                    gameContainer.style.backgroundImage = `url(${step.image})`; 
+                    nextStep(); 
+                    break;
+                case 'character': 
+                    characterSprite.style.opacity = 0;
+                    setTimeout(() => {
+                        characterSprite.src = step.sprite;
+                        characterSprite.style.opacity = step.show ? 1 : 0;
+                        nextStep();
+                    }, 300);
+                    break;
+                case 'narration': 
+                    characterName.style.display = 'none'; 
+                    typewriter(step.text); 
+                    break;
+                case 'dialogue': 
+                    characterName.style.display = 'block'; 
+                    characterName.innerText = step.character; 
+                    typewriter(step.text); 
+                    break;
+                case 'choice':
+                    gameContainer.style.cursor = 'default';
+                    dialogueBox.classList.add('hidden');
+                    choicesBox.innerHTML = '';
+                    step.options.forEach(option => {
+                        const button = document.createElement('div');
+                        button.classList.add('choice-button');
+                        button.innerText = option.text;
+                        button.onclick = () => showScene(option.target);
+                        choicesBox.appendChild(button);
+                    });
+                    choicesBox.classList.remove('hidden');
+                    break;
+                case 'jump': 
+                    showScene(step.target); 
+                    break;
+                case 'ending': 
+                    showEnding(step.title, step.text); 
+                    break;
+            }
+        }
+
+        function showEnding(title, text) {
+            dialogueBox.classList.add('hidden');
+            choicesBox.classList.add('hidden');
+            characterSprite.style.opacity = '0';
+            endTitle.innerText = title;
+            endText.innerText = text;
+            endScreen.classList.remove('hidden');
+        }
+
+        function startGame() {
+            startScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            characterSprite.style.opacity = '0';
+            showScene('start');
+            playMusic();
+        }
+
+        startScreen.addEventListener('click', startGame);
+        endScreen.addEventListener('click', startGame);
+        
+        dialogueBox.addEventListener('click', () => {
+             if (choicesBox.classList.contains('hidden')) {
+                nextStep();
+            }
+        });
+    </script>
+
+</body>
+</html>
